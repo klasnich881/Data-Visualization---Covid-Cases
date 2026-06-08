@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 Trends Dashboard</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/script.js" defer></script>
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <div class="hero__content">
+                <h1>COVID-19 Trends Dashboard</h1>
+                <p class="hero__subtitle">
+                    Interactive visualization of reported COVID-19 cases and vaccinations by country.
+                </p>
+                <p class="hero__meta">
+                    <strong>Date range:</strong> {{ start_date }} to {{ end_date }}
+                </p>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="card controls-card">
+                <h2>Controls</h2>
+                <p class="muted">
+                    Select a country and metric to update the chart without reloading the page.
+                </p>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="countrySelect">Country</label>
+                        <select id="countrySelect">
+                            {% for country in countries %}
+                                <option value="{{ country }}" {% if country == default_country %}selected{% endif %}>
+                                    {{ country }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="metricSelect">Metric</label>
+                        <select id="metricSelect">
+                            <option value="new_cases">New Cases</option>
+                            <option value="new_vaccinations">New Vaccinations</option>
+                            <option value="new_cases_roll3">3-Month Rolling Cases</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h2 id="chartHeading">COVID Trend</h2>
+                        <p class="muted">
+                            Time-series line chart showing the selected metric over time.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="chart"></div>
+
+                <p class="caption">
+                    Figure 1. Interactive Plotly line chart of COVID-19 indicators. Missing vaccination values were interpolated and mild outliers were clipped.
+                </p>
+            </section>
+
+            <section class="card insights-card">
+                <h2>Insights</h2>
+                <p>
+                    The chart shows how reported COVID-19 cases and vaccinations changed over time for each country.
+                    Case counts rise and fall in waves, while vaccination values generally increase later in the timeline.
+                    Some sharp peaks may reflect real outbreaks, but they may also come from delayed or batch reporting.
+                </p>
+                <p>
+                    These trends should be interpreted carefully. Changes in vaccinations and cases do not prove a direct
+                    cause-and-effect relationship, since case counts are also influenced by testing levels, reporting
+                    practices, public health policy, and behavior.
+                </p>
+                <p>
+                    A line chart was used because it clearly shows change over time. Axis labels, title, legend, and caption
+                    were kept simple for readability. Missing vaccination values were interpolated to preserve continuity,
+                    and mild outliers were clipped rather than removed so unusual spikes remain visible without dominating
+                    the figure.
+                </p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
